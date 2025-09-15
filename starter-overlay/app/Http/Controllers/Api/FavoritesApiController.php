@@ -5,40 +5,33 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\FavoriteStoreRequest;
-use App\Http\Requests\FavoriteDeleteRequest;
-use App\Http\Resources\QuoteResource;
 use App\Services\FavoritesService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Request;
 
+/**
+ * FavoritesApiController (TEMPLATE - API, Sanctum required)
+ * JSON responses only; status codes: 200 list, 201 create, 204 delete, 422 validation.
+ */
 final class FavoritesApiController extends Controller
 {
     public function __construct(private FavoritesService $service) {}
 
-    public function index(): AnonymousResourceCollection
+    public function index(): JsonResponse
     {
-        return QuoteResource::collection($this->service->list(request()->user()));
+        // TODO: return JSON list for request()->user()
+        throw new \LogicException('Not implemented: FavoritesApiController::index');
     }
 
-    public function store(FavoriteStoreRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        $quote = $this->service->add($request->user(), $request->string('text'), $request->input('author'));
-        return (new QuoteResource($quote))->response()->setStatusCode(201);
+        // TODO: validate, $this->service->add(...), return 201 with JSON {id,text,author}
+        throw new \LogicException('Not implemented: FavoritesApiController::store');
     }
 
-    public function destroy(FavoriteDeleteRequest $request): JsonResponse
+    public function destroy(Request $request): JsonResponse
     {
-        if ($request->wantsHash()) {
-            $this->service->removeByHash($request->user(), $request->string('unique_hash'));
-        } else {
-            $text = $request->input('text');
-            if (!filled($text)) {
-                return response()->json(['error' => 'Provide unique_hash or text (+optional author)'], 422);
-            }
-            $this->service->removeByTextAuthor($request->user(), $text, $request->input('author'));
-        }
-
-        return response()->json([], 204);
+        // TODO: if unique_hash provided -> removeByHash; else require text (+author) -> removeByTextAuthor; return 204
+        throw new \LogicException('Not implemented: FavoritesApiController::destroy');
     }
 }
