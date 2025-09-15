@@ -23,7 +23,7 @@ class ZenQuotesClientStub implements QuoteApiClient
         return $dto;
     }
 
-    public function fetchRandomQuotes(int $count = 10): array
+    public function fetchRandomQuotes(int $count = 1): array
     {
         $key = 'quotes.batch';
         $isCached = Cache::has($key);
