@@ -14,8 +14,8 @@ This starter bootstraps **Laravel 12**, **Sanctum**, **SQLite** (DB + database c
 ## Quick Start
 
 ```bash
-git clone <your-fork-url>
-cd laravel-quotes-starter
+git clone https://github.com/Priority-Wire/Laravel-Coding-Challenge
+cd Laravel-Coding-Challenge
 
 ./scripts/bootstrap-laravel.sh
 
