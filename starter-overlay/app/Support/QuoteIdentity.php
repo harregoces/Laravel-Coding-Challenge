@@ -4,24 +4,17 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+/**
+ * QuoteIdentity (TEMPLATE)
+ * Centralize canonicalization + unique_hash creation.
+ * ADR 0004 should document your rules.
+ */
 final class QuoteIdentity
 {
+    /** @return array{0:string,1:?string,2:string} [canonText, canonAuthor, uniqueHash] */
     public static function hashFrom(string $text, ?string $author = null): array
     {
-        $canonText = self::canon($text);
-        $canonAuthor = $author !== null ? self::canon($author) : null;
-
-        // NOTE: Canon rules are intentionally simple here; ADR 0004 can expand them (unicode/whitespace rules).
-        $hash = hash('sha256', $canonText . '|' . ($canonAuthor ?? ''));
-        return [$canonText, $canonAuthor, $hash];
-    }
-
-    private static function canon(string $s): string
-    {
-        // minimal canonicalization: trim + collapse whitespace
-        // TODO: tighten canonicalization rules
-        $s = trim($s);
-        $s = preg_replace('/\s+/u', ' ', $s) ?? $s;
-        return $s;
+        // TODO: minimal canon (trim, collapse whitespace), sha256(canonText|canonAuthor)
+        throw new \LogicException('Not implemented: QuoteIdentity::hashFrom');
     }
 }
