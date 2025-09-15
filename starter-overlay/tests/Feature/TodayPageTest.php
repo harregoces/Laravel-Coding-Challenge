@@ -18,14 +18,22 @@ class TodayPageTest extends TestCase
 
     public function test_today_page_loads_and_caches(): void
     {
-        $this->get('/today')->assertStatus(200);
+        // First request: not cached
+        $res1 = $this->get('/today');
+        $res1->assertStatus(200);
+        $this->assertStringNotContainsString('[cached]', $res1->getContent());
+
         // second hit should be cached; we avoid asserting presentation details here
-        $this->get('/today')->assertStatus(200);
+        $res2 = $this->get('/today');
+        $res2 -> assertStatus(200);
+        $this->assertStringContainsString('[cached]', $res2->getContent());
     }
 
     public function test_today_refresh_param_busts_cache(): void
     {
-        $this->get('/today')->assertStatus(200);
-        $this->get('/today?new=1')->assertStatus(200);
+        $this->get('/today')->assertStatus(200); // warm cache
+        $res3 = $this->get('/today?new=1'); // bust cache 
+        $res3->assertStatus(200);
+        $this->assertStringNotContainsString('[cached]', $res3->getContent());
     }
 }
