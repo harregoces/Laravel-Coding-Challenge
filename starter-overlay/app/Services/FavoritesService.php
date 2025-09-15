@@ -4,47 +4,49 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Models\Quote;
 use App\Models\User;
+use App\Models\Quote;
 use Illuminate\Support\Collection;
 
+/**
+ * FavoritesService (TEMPLATE)
+ * Implement list/add/remove logic once here and call from web+API controllers.
+ * Requirements in CHALLENGE.md (idempotent add, identity via unique_hash).
+ */
 final class FavoritesService
 {
+    /** Return the current user's favorites (most recent first). */
     public function list(User $user): Collection
     {
-        return $user->favoriteQuotes()->latest()->get();
+        // TODO: query relation and order (latest first)
+        throw new \LogicException('Not implemented: FavoritesService::list');
     }
 
+    /** Add a favorite idempotently and return the Quote. */
     public function add(User $user, string $text, ?string $author = null): Quote
     {
-        [$canonText, $canonAuthor, $hash] = \App\Support\QuoteIdentity::hashFrom($text, $author);
-
-        $quote = Quote::firstOrCreate(
-            ['unique_hash' => $hash],
-            ['text' => $canonText, 'author' => $canonAuthor, 'source_key' => 'zenquotes']
-        );
-
-        $user->favoriteQuotes()->syncWithoutDetaching([$quote->id]);
-
-        return $quote;
+        // TODO: compute canonical identity, firstOrCreate Quote, syncWithoutDetaching
+        throw new \LogicException('Not implemented: FavoritesService::add');
     }
 
+    /** Remove favorite by unique hash (if exists). */
     public function removeByHash(User $user, string $uniqueHash): void
     {
-        $quote = Quote::where('unique_hash', $uniqueHash)->first();
-        if ($quote) {
-            $user->favoriteQuotes()->detach($quote->id);
-        }
+        // TODO: look up Quote by hash and detach
+        throw new \LogicException('Not implemented: FavoritesService::removeByHash');
     }
 
+    /** Remove favorite by text/author (derive hash). */
     public function removeByTextAuthor(User $user, string $text, ?string $author = null): void
     {
-        [, , $hash] = \App\Support\QuoteIdentity::hashFrom($text, $author);
-        $this->removeByHash($user, $hash);
+        // TODO: compute hash from text/author and delegate to removeByHash
+        throw new \LogicException('Not implemented: FavoritesService::removeByTextAuthor');
     }
 
+    /** Remove favorite by quote id. */
     public function removeByQuoteId(User $user, int $quoteId): void
     {
-        $user->favoriteQuotes()->detach($quoteId);
+        // TODO: detach directly
+        throw new \LogicException('Not implemented: FavoritesService::removeByQuoteId');
     }
 }
