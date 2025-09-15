@@ -29,11 +29,20 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
    - Support **`?new=1`** to refresh (bust cache → fetch → cache → display)  
    - Accessible to **guests and authenticated users**
 
-2) **Random Quotes (unified) — `/quotes`**  
+2) **Random Quotes  — `/quotes`**  
+   **Web**
    - Show **5 quotes** for guests; **10 quotes** for authenticated users  
    - Serve from a cached **batch**; **TTL 30s**; support **`?new=1`** to refresh the batch  
    - If authenticated, each item has an **“Add to favorites”** button (idempotent)  
    - **Banner** displays client mode: **STUB** or **REAL**
+
+  **API**
+   - **GET `/api/quotes`**  
+   - Supports **`?new=1`** to refresh the cached batch (bust cache → fetch → cache → display)   
+   - **Defaults**: `count` **omitted → 5** (regardless of auth)  
+   - If **`count > 5`**, **authentication required** — otherwise **401 JSON** `{ "error": "Unauthenticated" }`  
+   - Upper bound **10** (even for authenticated)  
+   - Response includes `meta.client` (**"stub"** or **"real"**; **defaults to `"real"`** if omitted) and `meta.count` and per‑item `cached` flags
 
 3) **Favorites (CRUD minus Update)**  
    **Web (auth only)**  
@@ -48,41 +57,33 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
 
    *Why no Update?* Quotes from external sources don’t have a meaningful partial update for a “favorite.” Create/delete is sufficient; add must be idempotent (no duplicates per user).
 
-4) **REST API — Random Quotes**  
-   - **GET `/api/quotes`**  
-   - Supports **`?new=1`** to refresh the cached batch  
-   - **Defaults**: `count` **omitted → 5** (regardless of auth)  
-   - If **`count > 5`**, **authentication required** — otherwise **401 JSON** `{ "error": "Unauthenticated" }`  
-   - Upper bound **10** (even for authenticated)  
-   - Response includes `meta.client` (**"stub"** or **"real"**; **defaults to `"real"`** if omitted) and `meta.count` and per‑item `cached` flags
-
-5) **Seeds**  
+4) **Seeds**  
    - Create **3 users**, each with **3 favorites**, using **local JSON fixtures** (no network calls in seeders)
 
-6) **Caching**  
+5) **Caching**  
    - Use the **database** cache driver (SQLite). Provide migration for cache table (bootstrapped)  
    - Suggested keys: `qod.current` (QOD), `quotes.batch` (random quotes batch)  
    - Share cache between web and API
 
-7) **Containerized Delivery (Core)**  
+6) **Containerized Delivery (Core)**  
    - CI builds an OCI image from the included **Containerfile** (`php:8.3-apache-bookworm`)  
    - Optionally **publish a public image to GHCR**: set repo variables `PUBLISH=true` and `MAKE_PUBLIC=true` (workflow includes a visibility step; you may also set visibility via GitHub UI)
 
-8) **Testing**  
+7) **Testing**  
    - Make the provided **acceptance tests** pass (`php artisan test`)  
    - Add at least **2 unit tests** (e.g., API client normalization; favorites idempotency)  
    - **Fix the flawed module**: `app/Flawed/NaiveQuoteCache.php` has a TTL bug; `tests/Unit/FlawedNaiveCacheTest.php` fails until fixed (commit with a short diagnosis note)  
    - Optional micro‑enhancement: add a simple `?author=` filter to `/quotes` that uses **cached** data only and include a test
 
-9) **ADRs (2 short)** — required  
+8) **ADRs (2 short)** — required  
    - `/docs/adr/0001-caching-approach.md` — TTL, cache keys, stampede prevention (if any), trade‑offs  
    - `/docs/adr/0002-api-boundary-and-dtos.md` — service/DTO boundary, normalization choices, and test strategy
 
-10) **Postman collection** — required*  
+9) **Postman collection** — required*  
    - Update `starter-overlay/postman/quotes-collection.json` base URL and token  
    - *If you implement the **Swagger/api‑test** stretch goal, you may mark Postman “optional” in your README*
 
-11) **Documentation**  
+10) **Documentation**  
    - Keep **README** current (run instructions for Windows/macOS/Linux; container run instructions)  
    - Complete **docs/SELF_REVIEW.md** before submission  
    - If you used AI, document it in **AI_USAGE.md** (what, where, and your review of it)
@@ -94,9 +95,9 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
 - Swagger/OpenAPI or `/api-test` page
 - Console command: `php artisan Get-FiveRandomQuotes [--new]` sharing the `/quotes` cache
 - Rate‑limit resilience: 429 backoff + logging + simple lock to avoid cache stampede
-- Policy/Gate: restrict delete to **own** favorites + negative tests
 - All‑users report page
-- **Larastan level 9** (keep CI green)
+  - Policy/Gate: restrict delete to **own** favorites + negative tests
+- Larastan level 9 (keep CI green)
 
 ---
 
