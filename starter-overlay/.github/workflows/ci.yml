@@ -10,9 +10,16 @@ permissions:
   contents: read
   packages: write
 
+# Avoid double-running on quick successive pushes to the same ref
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+
     steps:
       - uses: actions/checkout@v4
 
@@ -23,22 +30,48 @@ jobs:
           extensions: sqlite, pdo_sqlite, mbstring, tokenizer, xml, curl, fileinfo, dom, openssl
           coverage: none
 
+      # Composer cache will help on subsequent runs even though we create the project.
       - name: Cache Composer packages
         uses: actions/cache@v4
         with:
           path: ~/.composer/cache/files
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Bootstrap Laravel 12 + Sanctum + Larastan
         run: |
           chmod +x scripts/bootstrap-laravel.sh
           ./scripts/bootstrap-laravel.sh
 
-      - name: Configure app key and DB
+      # Make CI resilient to missing .env.example; always create a valid .env for the runner
+      - name: Create .env (CI)
+        shell: bash
         run: |
-          cp .env.example .env
+          if [ -f .env ]; then
+            echo ".env already exists"
+          elif [ -f .env.example ]; then
+            cp .env.example .env
+            echo "APP_ENV=testing" >> .env
+          else
+            echo "APP_ENV=testing" > .env
+            echo "APP_KEY=" >> .env
+            echo "APP_DEBUG=true" >> .env
+            echo "APP_URL=http://localhost:8000" >> .env
+            echo "LOG_CHANNEL=stack" >> .env
+            echo "LOG_LEVEL=debug" >> .env
+            echo "DB_CONNECTION=sqlite" >> .env
+            echo "CACHE_DRIVER=database" >> .env
+          fi
+          # Always force DB path for CI to be absolute in the runner workspace
+          sed -i.bak "/^DB_DATABASE=/d" .env
+          echo "DB_DATABASE=$(pwd)/database/database.sqlite" >> .env
+
+      - name: App key & database
+        run: |
           php artisan key:generate
+          mkdir -p database
+          touch database/database.sqlite
           php artisan migrate:fresh --seed
 
       - name: Run tests
@@ -50,10 +83,12 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       IMAGE_NAME: ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
       PUBLISH: ${{ vars.PUBLISH || 'false' }}
       MAKE_PUBLIC: ${{ vars.MAKE_PUBLIC || 'false' }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -76,12 +111,21 @@ jobs:
           context: .
           file: starter-overlay/Containerfile
           push: ${{ env.PUBLISH == 'true' }}
-          tags: ${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ env.IMAGE_NAME }}
+            ghcr.io/${{ github.repository }}:latest
 
+      # NOTE: This endpoint works for user-scoped packages.
+      # For org repos, you may need to call:
+      #   https://api.github.com/orgs/{org}/packages/container/{PKG_NAME}/visibility
       - name: Make GHCR image public (optional)
         if: env.PUBLISH == 'true' && env.MAKE_PUBLIC == 'true'
         env:
           PKG_NAME: ${{ github.event.repository.name }}
         run: |
           echo "Attempting to set GHCR package visibility to public..."
-          curl -L -X PATCH             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"             -H "Accept: application/vnd.github+json"             https://api.github.com/user/packages/container/${PKG_NAME}/visibility             -d '{"visibility":"public"}' || true
+          curl -L -X PATCH \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/user/packages/container/${PKG_NAME}/visibility \
+            -d '{"visibility":"public"}' || true
