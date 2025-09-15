@@ -51,7 +51,7 @@ php artisan cache:table || true
 # Detect Laravel major version; pick Larastan accordingly
 LARAVEL_MAJ=$(php -r "echo preg_replace('/[^0-9].*$/','', json_decode(file_get_contents('composer.json'), true)['require']['laravel/framework'] ?? '12');")
 if [ "${LARAVEL_MAJ:-12}" -ge 12 ]; then
-  composer require --dev nunomaduro/larastan:^3 --no-interaction
+  composer require --dev larastan/larastan:^3 --no-interaction
 else
   composer require --dev nunomaduro/larastan:^2.11 --no-interaction
 fi
