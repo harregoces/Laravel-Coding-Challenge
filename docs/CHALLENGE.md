@@ -78,9 +78,11 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
    - **Fix the flawed module**: `app/Flawed/NaiveQuoteCache.php` has a TTL bug; `tests/Unit/FlawedNaiveCacheTest.php` fails until fixed (commit with a short diagnosis note)  
    - Optional micro‑enhancement: add a simple `?author=` filter to `/quotes` that uses **cached** data only and include a test
 
-8) **ADRs (2 short)** — required  
+8) **ADRs (pick 2-3)** — required  
    - `/docs/adr/0001-caching-approach.md` — TTL, cache keys, stampede prevention (if any), trade‑offs  
    - `/docs/adr/0002-api-boundary-and-dtos.md` — service/DTO boundary, normalization choices, and test strategy
+   - `/docs/adr/0003-external-api-resilience.md` — External API Resilience (Retries, Backoff, Fallbacks)
+   - `/docs/adr/0004-favorites-identity-and-deduplication.md` — Favorites Identity & De‑duplication (Canonicalization & Constraints)
   
    Each ADR should be ~250–400 words and must reference the exact code locations, tests, and (optionally) commit IDs that implement the decision. Boilerplate or generic ADRs without code anchors will be considered incomplete. 
 
