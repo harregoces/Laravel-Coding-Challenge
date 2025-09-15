@@ -73,6 +73,7 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
    - Optionally **publish a public image to GHCR**: set repo variables `PUBLISH=true` and `MAKE_PUBLIC=true` (workflow includes a visibility step; you may also set visibility via GitHub UI)
 
 7) **Testing**  
+   - Please do not modify the existing tests. You may add tests (at least 2 unit tests required, more recommended), but changes to provided tests should be called out and justified.
    - Make the provided **acceptance tests** pass (`php artisan test`)  
    - Add at least **2 unit tests** (e.g., API client normalization; favorites idempotency)  
    - **Fix the flawed module**: `app/Flawed/NaiveQuoteCache.php` has a TTL bug; `tests/Unit/FlawedNaiveCacheTest.php` fails until fixed (commit with a short diagnosis note)  
