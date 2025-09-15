@@ -1,7 +1,7 @@
 # ADR 0001: Caching TTL, Keys & Stampede Prevention
 
 - **Status:** Proposed
-- **Date:** 2025-09-15
+- **Date:** <YYYY-MM-DD>
 
 ## Context
 
