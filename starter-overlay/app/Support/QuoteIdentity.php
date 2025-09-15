@@ -19,6 +19,7 @@ final class QuoteIdentity
     private static function canon(string $s): string
     {
         // minimal canonicalization: trim + collapse whitespace
+        // TODO: tighten canonicalization rules
         $s = trim($s);
         $s = preg_replace('/\s+/u', ' ', $s) ?? $s;
         return $s;
