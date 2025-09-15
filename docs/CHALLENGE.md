@@ -36,7 +36,7 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
    - If authenticated, each item has an **“Add to favorites”** button (idempotent)  
    - **Banner** displays client mode: **STUB** or **REAL**
 
-  **API**
+   **API**
    - **GET `/api/quotes`**  
    - Supports **`?new=1`** to refresh the cached batch (bust cache → fetch → cache → display)   
    - **Defaults**: `count` **omitted → 5** (regardless of auth)  
