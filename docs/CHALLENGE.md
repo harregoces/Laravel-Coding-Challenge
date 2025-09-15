@@ -41,7 +41,7 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
    - Supports **`?new=1`** to refresh the cached batch (bust cache → fetch → cache → display)   
    - **Defaults**: `count` **omitted → 5** (regardless of auth)  
    - If **`count > 5`**, **authentication required** — otherwise **401 JSON** `{ "error": "Unauthenticated" }`  
-   - Upper bound **10** (even for authenticated)  
+   - Lower bound *1*, no authentication required for *<=5*, & upper bound **10** (even for authenticated)  
    - Response includes `meta.client` (**"stub"** or **"real"**; **defaults to `"real"`** if omitted) and `meta.count` and per‑item `cached` flags
 
 3) **Favorites (CRUD minus Update)**  
