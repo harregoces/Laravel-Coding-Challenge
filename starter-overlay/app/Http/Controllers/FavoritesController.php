@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Quote;
 use App\Services\FavoritesService;
-use Illuminate\Http\Request;
+use App\Http\Requests\FavoriteStoreRequest;
 
 /**
  * FavoritesController (TEMPLATE - Web)
@@ -22,7 +22,7 @@ final class FavoritesController extends Controller
         throw new \LogicException('Not implemented: FavoritesController::index');
     }
 
-    public function store(Request $request)
+    public function store(FavoriteStoreRequest $request)
     {
         // TODO: validate text/author; $this->service->add(...); redirect back with status
         throw new \LogicException('Not implemented: FavoritesController::store');
