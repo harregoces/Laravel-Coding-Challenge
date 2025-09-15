@@ -30,33 +30,34 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
    - Accessible to **guests and authenticated users**
 
 2) **Random Quotes  — `/quotes`**  
-   **Web**
-   - Show **5 quotes** for guests by default; **10 quotes** for authenticated users by default
-     - Supports **`?count=7`** to specify number of quotes shown
-     - If **`count > 5`**, **authentication required** - otherwise show error that guest user is unathenticated
-     - Lower bound *1*, no authentication required for *<=5*, & upper bound **10** (even for authenticated)
-   - Serve from a cached **batch**; **TTL 30s**; support **`?new=1`** to refresh the batch  
-   - If authenticated, each item has an **“Add to favorites”** button (idempotent)  
-   - **Banner** displays client mode: **STUB** or **REAL**
+   - **Web**
+      - Show **5 quotes** for guests by default; **10 quotes** for authenticated users by default
+        - Supports **`?count=7`** to specify number of quotes shown
+        - If **`count > 5`**, **authentication required** - otherwise show error that guest user is unathenticated
+        - Lower bound *1*, no authentication required for *<=5*, & upper bound **10** (even for authenticated)
+      - Serve from a cached **batch**; **TTL 30s**; support **`?new=1`** to refresh the batch  
+      - If authenticated, each item has an **“Add to favorites”** button (idempotent)  
+      - **Banner** displays client mode: **STUB** or **REAL**
 
-   **API**
-   - **GET `/api/quotes`**  
-   - Supports **`?new=1`** to refresh the cached batch (bust cache → fetch → cache → display)   
-   - **Defaults**: `count` **omitted → 5** (regardless of auth)  
-   - If **`count > 5`**, **authentication required** — otherwise **401 JSON** `{ "error": "Unauthenticated" }`  
-   - Lower bound *1*, no authentication required for *<=5*, & upper bound **10** (even for authenticated)  
-   - Response includes `meta.client` (**"stub"** or **"real"**; **defaults to `"real"`** if omitted) and `meta.count` and per‑item `cached` flags
+   - **API**
+      - **GET `/api/quotes`**  
+      - Supports **`?new=1`** to refresh the cached batch (bust cache → fetch → cache → display)   
+      - **Defaults**: `count` **omitted → 5** (regardless of auth)  
+      - If **`count > 5`**, **authentication required** — otherwise **401 JSON** `{ "error": "Unauthenticated" }`  
+      - Lower bound *1*, no authentication required for *<=5*, & upper bound **10** (even for authenticated)  
+      - Response includes `meta.client` (**"stub"** or **"real"**; **defaults to `"real"`** if omitted) and `meta.count` and per‑item `cached` flags
 
 3) **Favorites (CRUD minus Update)**  
-   **Web (auth only)**  
-   - **GET `/favorites`** — list current user’s favorites (empty‑state message if none)  
-   - **POST `/favorites`** — add a favorite *(idempotent)*; body contains `text` and optional `author`  
-   - **DELETE `/favorites/{quote}`** — remove from favorites  
-
-   **API (auth only; Sanctum)**  
-   - **GET `/api/favorites`**  
-   - **POST `/api/favorites`** — JSON `{ "text": "...", "author": "..." }`  
-   - **DELETE `/api/favorites`** — JSON `{ "unique_hash": "..." }` **or** `{ "text": "...", "author": "..." }`  
+   - Implement logic once in a **FavoritesService** and call it from both controllers (web + API)
+   - **Web (auth only)**
+     - **GET `/favorites`** — list current user’s favorites (empty‑state message if none)
+     - **POST `/favorites`** — add a favorite *(idempotent)*; body contains `text` and optional `author`
+     - **DELETE `/favorites/{quote}`** — remove from favorites
+   - **API (auth only; Sanctum)**
+     - **GET `/api/favorites`**
+     - **POST `/api/favorites`** — JSON `{ "text": "...", "author": "..." }`
+     - **DELETE `/api/favorites`** — JSON `{ "unique_hash": "..." }` **or** `{ "text": "...", "author": "..." }`
+   - Use **unique_hash** to prevent duplicates: derive from canonicalized `(text, author)` in `App\Support\QuoteIdentity`
 
    *Why no Update?* Quotes from external sources don’t have a meaningful partial update for a “favorite.” Create/delete is sufficient; add must be idempotent (no duplicates per user).
 
