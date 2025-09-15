@@ -14,10 +14,10 @@
 - 
 
 ## Consequences
-**Pros:** 
+  **Pros:** 
 - 
 
-**Cons:** 
+  **Cons:** 
 - 
 
 ## Alternatives Considered
