@@ -1,46 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FavoriteStoreRequest;
 use App\Models\Quote;
-use Illuminate\Http\Request;
+use App\Services\FavoritesService;
 
-class FavoritesController extends Controller
+final class FavoritesController extends Controller
 {
+    public function __construct(private FavoritesService $service) {}
+
     public function index()
     {
-        $user = auth()->user();
-        $favorites = $user->favoriteQuotes()->latest()->get();
+        $favorites = $this->service->list(auth()->user());
         return view('favorites', compact('favorites'));
     }
 
-    public function store(Request $request)
+    public function store(FavoriteStoreRequest $request)
     {
-        $request->validate([
-            'text' => ['required', 'string'],
-            'author' => ['nullable', 'string'],
-        ]);
-
         $user = auth()->user();
-        $text = $request->string('text');
-        $author = $request->input('author');
-        $hash = hash('sha256', $text . '|' . $author);
-
-        $quote = Quote::firstOrCreate(
-            ['unique_hash' => $hash],
-            ['text' => $text, 'author' => $author, 'source_key' => 'zenquotes']
-        );
-
-        $user->favoriteQuotes()->syncWithoutDetaching([$quote->id]);
+        $this->service->add($user, $request->string('text'), $request->input('author'));
 
         return redirect()->back()->with('status', 'Added to favorites');
     }
 
     public function destroy(Quote $quote)
     {
-        $user = auth()->user();
-        $user->favoriteQuotes()->detach($quote->id);
-
+        $this->service->removeByQuoteId(auth()->user(), $quote->id);
         return redirect()->back()->with('status', 'Removed from favorites');
     }
 }
