@@ -11,7 +11,7 @@ This is a **cohesive starter** for your coding challenge. It bootstraps **Larave
 - 🧪 **Grader’s Checklist** → [docs/GRADER_CHECKLIST.md](docs/GRADER_CHECKLIST.md)
 - 🧭 **ADRs** → [docs/adr](docs/adr)
 - 🔌 **Postman Collection** → [starter-overlay/postman/quotes-collection.json](starter-overlay/postman/quotes-collection.json)
-- If you used AI, document it in [AI_USAGE.md] (what, where, and your review of it)
+- If you used AI, document it in [AI_USAGE.md](AI_USAGE.md) (what, where, and your review of it)
 
 ## Quick Start
 
