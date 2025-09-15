@@ -82,7 +82,7 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
    - `/docs/adr/0001-caching-approach.md` — TTL, cache keys, stampede prevention (if any), trade‑offs  
    - `/docs/adr/0002-api-boundary-and-dtos.md` — service/DTO boundary, normalization choices, and test strategy
   
-   *ADRs with generic wording or missing code anchors will be considered incomplete. 
+   Each ADR should be ~250–400 words and must reference the exact code locations, tests, and (optionally) commit IDs that implement the decision. Boilerplate or generic ADRs without code anchors will be considered incomplete. 
 
 9) **Postman collection** — required*  
    - Update `starter-overlay/postman/quotes-collection.json` base URL and token  
