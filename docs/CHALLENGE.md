@@ -24,7 +24,8 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
 1) **Quote of the Day — `/today`**  
    - Source: **ZenQuotes free** `/api/today` *(no premium)*  
    - **Cache 30s**; if served from cache, prefix the text with **`[cached]`**  
-   - Display a **random local image** from `public/images/inspiration/*` (three images are prefilled)  
+   - Display a **random image** from `/api/image`
+     - Local images for **STUB** client mode are stored in `public/images/inspiration/*` (five images are prefilled)  
    - Support **`?new=1`** to refresh (bust cache → fetch → cache → display)  
    - Accessible to **guests and authenticated users**
 
