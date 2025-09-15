@@ -1,7 +1,7 @@
 # ADR 0002: External API Boundary & DTO Normalization
 
 - **Status:** Proposed
-- **Date:** 2025-09-15
+- **Date:** <YYYY-MM-DD>
 
 ## Context
 - 
