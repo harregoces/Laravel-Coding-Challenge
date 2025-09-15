@@ -1,4 +1,4 @@
-# AI Usage Disclosure (optional but encouraged)
+# AI Usage Disclosure (highly encouraged)
 
 If you used AI tools (ChatGPT, GitHub Copilot, etc.) in a **meaningful** way, please describe:
 
