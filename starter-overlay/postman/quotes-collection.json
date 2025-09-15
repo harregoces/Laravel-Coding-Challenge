@@ -18,6 +18,7 @@
       "name": "Today (QOD)",
       "request": {
         "method": "GET",
+        "header": [],
         "url": {
           "raw": "{{base_url}}/today",
           "host": [
@@ -30,30 +31,10 @@
       }
     },
     {
-      "name": "Today (QOD) \u2014 refresh",
+      "name": "Quotes (API) \u2014 guest (5)",
       "request": {
         "method": "GET",
-        "url": {
-          "raw": "{{base_url}}/today?new=1",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "today"
-          ],
-          "query": [
-            {
-              "key": "new",
-              "value": "1"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Quotes (API) \u2014 guest default (5)",
-      "request": {
-        "method": "GET",
+        "header": [],
         "url": {
           "raw": "{{base_url}}/api/quotes",
           "host": [
@@ -67,51 +48,7 @@
       }
     },
     {
-      "name": "Quotes (API) \u2014 refresh (guest)",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "{{base_url}}/api/quotes?new=1",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "quotes"
-          ],
-          "query": [
-            {
-              "key": "new",
-              "value": "1"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Quotes (API) \u2014 count=10 (guest \u2192 401)",
-      "request": {
-        "method": "GET",
-        "url": {
-          "raw": "{{base_url}}/api/quotes?count=10",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "quotes"
-          ],
-          "query": [
-            {
-              "key": "count",
-              "value": "10"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Quotes (API) \u2014 count=10 (authorized)",
+      "name": "Quotes (API) \u2014 authed (10)",
       "request": {
         "method": "GET",
         "header": [
@@ -133,6 +70,29 @@
             {
               "key": "count",
               "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Quotes (API) \u2014 refresh",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/quotes?new=1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "quotes"
+          ],
+          "query": [
+            {
+              "key": "new",
+              "value": "1"
             }
           ]
         }
@@ -176,7 +136,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"text\":\"Test quote\",\"author\":\"Tester\"}"
+          "raw": "{\"text\": \"Test quote\", \"author\": \"Tester\"}"
         },
         "url": {
           "raw": "{{base_url}}/api/favorites",
@@ -206,7 +166,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\"text\":\"Test quote\",\"author\":\"Tester\"}"
+          "raw": "{\"text\": \"Test quote\", \"author\": \"Tester\"}"
         },
         "url": {
           "raw": "{{base_url}}/api/favorites",

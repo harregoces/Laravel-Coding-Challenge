@@ -12,16 +12,18 @@ if [ ! -f "artisan" ]; then
 fi
 
 composer require laravel/sanctum --no-interaction
-php artisan vendor:publish --provider="Laravel\\Sanctum\\SanctumServiceProvider" --tag="migrations" --force || true
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider" --tag="migrations" --force || true
 
 mkdir -p database
 if [ ! -f "database/database.sqlite" ]; then
   touch database/database.sqlite
 fi
 
+# Overlay starter
 rsync -a --exclude 'vendor' --exclude 'node_modules' starter-overlay/ ./
 
+# Cache table for database cache driver
 php artisan cache:table || true
 
-# Require Larastan (PHPStan) at dev level
+# Larastan (level 7 configured in phpstan.neon.dist)
 composer require --dev nunomaduro/larastan:^2.9 phpstan/phpstan:^1.11 --no-interaction

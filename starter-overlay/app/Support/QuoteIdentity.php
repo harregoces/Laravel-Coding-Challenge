@@ -7,7 +7,7 @@ namespace App\Support;
 /**
  * QuoteIdentity (TEMPLATE)
  * Centralize canonicalization + unique_hash creation.
- * ADR 0004 should document your rules.
+ * Document your rules in ADR 0004.
  */
 final class QuoteIdentity
 {

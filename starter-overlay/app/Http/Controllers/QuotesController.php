@@ -19,6 +19,7 @@ class QuotesController extends Controller
 
         return view('quotes', [
             'quotes' => $quotes,
+            'client' => config('quotes.client'),
         ]);
     }
 }

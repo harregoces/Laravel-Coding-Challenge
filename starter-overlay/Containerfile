@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /var/www/html
 COPY --from=vendor /app /var/www/html
 
+# Set Laravel public as docroot; enable .htaccess override
 RUN sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/html/public#' /etc/apache2/sites-available/000-default.conf \
  && sed -i 's#<Directory /var/www/>#<Directory /var/www/html/public/>#' /etc/apache2/apache2.conf \
  && sed -i 's#AllowOverride None#AllowOverride All#' /etc/apache2/apache2.conf

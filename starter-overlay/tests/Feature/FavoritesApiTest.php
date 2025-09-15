@@ -25,7 +25,8 @@ class FavoritesApiTest extends TestCase
 
         $this->withHeader('Authorization', 'Bearer '.$token)
             ->postJson('/api/favorites', $payload)
-            ->assertStatus(201);
+            ->assertStatus(201)
+            ->assertJsonPath('data.text', 'API quote');
 
         $this->withHeader('Authorization', 'Bearer '.$token)
             ->getJson('/api/favorites')

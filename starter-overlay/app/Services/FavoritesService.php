@@ -11,7 +11,10 @@ use Illuminate\Support\Collection;
 /**
  * FavoritesService (TEMPLATE)
  * Implement list/add/remove logic once here and call from web+API controllers.
- * Requirements in CHALLENGE.md (idempotent add, identity via unique_hash).
+ * Requirements (see CHALLENGE.md):
+ *  - Idempotent add.
+ *  - Identity via unique_hash from App\Support\QuoteIdentity::hashFrom().
+ *  - Remove by hash, by text+author (derive hash), or by quote id.
  */
 final class FavoritesService
 {

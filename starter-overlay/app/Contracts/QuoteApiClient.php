@@ -8,8 +8,6 @@ interface QuoteApiClient
 {
     public function fetchQuoteOfTheDay(): QuoteDTO;
 
-    /**
-     * @return QuoteDTO[]
-     */
+    /** @return QuoteDTO[] */
     public function fetchRandomQuotes(int $count = 10): array;
 }

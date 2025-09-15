@@ -14,11 +14,18 @@ class TodayController extends Controller
         if ($request->boolean('new')) {
             cache()->forget('qod.current');
         }
+
         $dto = $this->client->fetchQuoteOfTheDay();
 
-        // pick a random local image
-        $files = glob(public_path('images/inspiration/*')) ?: [];
-        $image = count($files) ? asset('images/inspiration/' . basename($files[array_rand($files)])) : null;
+        // pick a random local image (3 shipped images)
+        $images = [];
+        $dir = public_path('images/inspiration');
+        if (is_dir($dir)) {
+            foreach (scandir($dir) as $f) {
+                if (preg_match('/\.png$/i', $f)) $images[] = $f;
+            }
+        }
+        $image = $images ? $images[array_rand($images)] : null;
 
         return view('today', [
             'quote' => $dto,

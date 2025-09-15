@@ -16,7 +16,7 @@ class QuoteSeeder extends Seeder
         foreach ($data as $row) {
             $text = $row['q'];
             $author = $row['a'] ?? null;
-            $hash = hash('sha256', $text . '|' . $author);
+            $hash = hash('sha256', trim($text) . '|' . trim((string) ($author ?? '')));
 
             Quote::firstOrCreate(
                 ['unique_hash' => $hash],

@@ -16,7 +16,7 @@ class FavoritesWebTest extends TestCase
         $this->get('/favorites')->assertRedirect('/login');
     }
 
-    public function test_add_and_delete_favorite(): void
+    public function test_add_and_delete_favorite_via_web(): void
     {
         $user = User::factory()->create();
         $payload = ['text' => 'Test quote', 'author' => 'Tester'];

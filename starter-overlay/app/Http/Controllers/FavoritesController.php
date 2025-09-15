@@ -11,6 +11,7 @@ use App\Http\Requests\FavoriteStoreRequest;
 /**
  * FavoritesController (TEMPLATE - Web)
  * Call FavoritesService; keep pages simple and behavior as per spec.
+ * Routes are behind auth middleware.
  */
 final class FavoritesController extends Controller
 {

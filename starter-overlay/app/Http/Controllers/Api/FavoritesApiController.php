@@ -26,14 +26,12 @@ final class FavoritesApiController extends Controller
 
     public function store(FavoriteStoreRequest $request): JsonResponse
     {
-        // TODO: validate, $this->service->add(...), return 201 with JSON {id,text,author}
-        // TODO: validate via FormRequest, add favorite via service, return 201 JSON
+        // TODO: validate via FormRequest, add favorite via service, return 201 JSON {id,text,author}
         throw new \LogicException('Not implemented: FavoritesApiController::store');
     }
 
-    public function destroy(FavoriteStoreRequest $request): JsonResponse
+    public function destroy(FavoriteDeleteRequest $request): JsonResponse
     {
-        // TODO: if unique_hash provided -> removeByHash; else require text (+author) -> removeByTextAuthor; return 204
         // TODO: if $request->wantsHash() removeByHash else removeByTextAuthor; return 204
         throw new \LogicException('Not implemented: FavoritesApiController::destroy');
     }

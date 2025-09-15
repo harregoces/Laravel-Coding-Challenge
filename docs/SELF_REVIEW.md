@@ -1,4 +1,3 @@
-
 # Self‑Review Checklist (mirror of grader sheet)
 
 ## Repo & Hygiene

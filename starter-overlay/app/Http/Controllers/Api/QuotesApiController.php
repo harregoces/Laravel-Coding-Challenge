@@ -21,9 +21,7 @@ class QuotesApiController extends Controller
         if ($count > 5 && !$isAuthed) {
             return response()->json(['error' => 'Unauthenticated'], 401);
         }
-        if ($count > 10) {
-            $count = 10;
-        }
+        $count = max(1, min(10, $count));
 
         $quotes = $this->client->fetchRandomQuotes($count);
 

@@ -33,17 +33,7 @@ final class ZenQuotesClient implements QuoteApiClient
     private const KEY_QOD   = 'qod.current';
     private const KEY_BATCH = 'quotes.batch';
 
-    /**
-     * Fetch the Quote of the Day.
-     *
-     * Expectations:
-     *  - Read from cache if present; otherwise fetch from `${base}/today`, normalize, and cache.
-     *  - Normalize to QuoteDTO (see QuoteDTO::fromZenQuotes()).
-     *  - Set the DTO's `cached` flag based on whether the value came from cache.
-     *  - Handle transient errors (429/timeouts) with bounded retries/backoff.
-     *
-     * @return QuoteDTO
-     */
+    /** @inheritDoc */
     public function fetchQuoteOfTheDay(): QuoteDTO
     {
         // TODO (candidate):
@@ -55,18 +45,7 @@ final class ZenQuotesClient implements QuoteApiClient
         throw new \LogicException('Not implemented: fetchQuoteOfTheDay()');
     }
 
-    /**
-     * Fetch a list of random quotes (count up to 10).
-     *
-     * Expectations:
-     *  - Maintain a shared "batch" cache under self::KEY_BATCH (array of raw quote rows).
-     *  - On cache hit: mark returned DTOs as cached=true; on miss: fetch `/api/quotes` once, cache the array, then sample.
-     *  - Shuffle and take `$count` items from the cached batch to avoid extra network calls.
-     *  - Handle 429/timeouts with bounded retries/backoff; fall back to existing cached batch when possible.
-     *
-     * @param  int  $count  Number of quotes requested (controllers/API bound to 5/10 and auth rules).
-     * @return array<QuoteDTO>
-     */
+    /** @inheritDoc */
     public function fetchRandomQuotes(int $count = 10): array
     {
         // TODO (candidate):
@@ -80,10 +59,4 @@ final class ZenQuotesClient implements QuoteApiClient
         //  5) On upstream failure with no cache, propagate a controlled error; with cache, return cached subset.
         throw new \LogicException('Not implemented: fetchRandomQuotes()');
     }
-
-    // You may add private helper methods if useful, for example:
-    //
-    // private function getWithRetry(string $url): array { ... }
-    // private function isRateLimited(\Throwable $e): bool { ... }
-    // private function ttl(): int { return (int) config('quotes.ttl', 30); }
 }

@@ -12,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(QuoteApiClient::class, function () {
-            return match (config('quotes.client', 'real')) {
+            return match (config('quotes.client')) {
                 'real' => new ZenQuotesClient(),
                 default => new ZenQuotesClientStub(),
             };

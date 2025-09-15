@@ -1,4 +1,3 @@
-
 # Grader’s Checklist — Quotes Challenge
 
 ## Repo & Hygiene (0–5)

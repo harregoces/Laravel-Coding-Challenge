@@ -44,17 +44,16 @@ jobs:
       - name: Run tests
         run: php artisan test --colors=always
 
-      - name: Run Larastan
+      - name: Run Larastan (level 7)
         run: vendor/bin/phpstan analyse --error-format=github
 
   build:
     needs: test
     runs-on: ubuntu-latest
     env:
-      IMAGE_SHA: ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
-      IMAGE_LATEST: ghcr.io/${{ github.repository }}:latest
-      IMAGE_REF: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-      PUBLISH: ${{ vars.PUBLISH || 'true' }}
+      IMAGE_NAME: ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
+      PUBLISH: ${{ vars.PUBLISH || 'false' }}
+      MAKE_PUBLIC: ${{ vars.MAKE_PUBLIC || 'false' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -71,22 +70,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build & Push (Apache image)
+      - name: Build (Apache image)
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: Containerfile
+          file: starter-overlay/Containerfile
           push: ${{ env.PUBLISH == 'true' }}
-          tags: |
-            ${{ env.IMAGE_SHA }}
-            ${{ env.IMAGE_LATEST }}
-            ${{ env.IMAGE_REF }}
+          tags: ${{ env.IMAGE_NAME }}
 
-      - name: Make GHCR package public
-        if: env.PUBLISH == 'true'
-        continue-on-error: true
+      - name: Make GHCR image public (optional)
+        if: env.PUBLISH == 'true' && env.MAKE_PUBLIC == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PKG_NAME: ${{ github.event.repository.name }}
         run: |
-          PACKAGE_NAME="${{ github.event.repository.name }}"
-          gh api -X PATCH "/user/packages/container/${PACKAGE_NAME}/visibility" -f visibility=public || true
+          echo "Attempting to set GHCR package visibility to public..."
+          curl -L -X PATCH             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"             -H "Accept: application/vnd.github+json"             https://api.github.com/user/packages/container/${PKG_NAME}/visibility             -d '{"visibility":"public"}' || true
