@@ -31,7 +31,10 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
 
 2) **Random Quotes  — `/quotes`**  
    **Web**
-   - Show **5 quotes** for guests; **10 quotes** for authenticated users  
+   - Show **5 quotes** for guests by default; **10 quotes** for authenticated users by default
+     - Supports **`?count=7`** to specify number of quotes shown
+     - If **`count > 5`**, **authentication required** - otherwise show error that guest user is unathenticated
+     - Lower bound *1*, no authentication required for *<=5*, & upper bound **10** (even for authenticated)
    - Serve from a cached **batch**; **TTL 30s**; support **`?new=1`** to refresh the batch  
    - If authenticated, each item has an **“Add to favorites”** button (idempotent)  
    - **Banner** displays client mode: **STUB** or **REAL**
