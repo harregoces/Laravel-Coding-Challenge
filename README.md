@@ -3,7 +3,7 @@
 This is a **cohesive starter** for your coding challenge. It bootstraps **Laravel 12**, **Sanctum**, **SQLite** (DB + database cache),
 **Larastan** (PHPStan) at **level 7**, a CI workflow, and a container image on **php:8.3-apache-bookworm**.
 
-> The Laravel scaffold itself is not committed. Run the bootstrap script to create Laravel 12 in-place and apply this overlay.
+> Fork the repo. The Laravel scaffold itself is not committed. Run the bootstrap script to create Laravel 12 in-place and apply this overlay.
 
 ## Start Here
 - 📖 **Challenge Instructions** → [docs/CHALLENGE.md](docs/CHALLENGE.md)
