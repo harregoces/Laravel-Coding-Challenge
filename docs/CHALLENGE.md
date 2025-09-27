@@ -11,7 +11,7 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
 - **Auth:** Laravel Sanctum (Bearer tokens for API)
 - **Database:** **SQLite** for app data
 - **Caching:** **database** cache driver (SQLite), TTL **30s**
-- **Static analysis:** **Larastan (PHPStan)** at **level 7** (core). *(Stretch: level 9) *
+- **Static analysis:** **Larastan (PHPStan)** at **level 6** (core). *(Stretch: level 8+) *
 - **Container:** `php:8.3-apache-bookworm` (Apache; mod_rewrite enabled)
 - **Rate limit & attribution:** Use only **ZenQuotes free** endpoints; show attribution link to **zenquotes.io** anywhere quotes are rendered; respect free tier (typically **5 requests / 30s / IP**).
 
@@ -106,7 +106,7 @@ This challenge assesses your ability to design clean Laravel code, integrate a 3
 - Rate‑limit resilience: 429 backoff + logging + simple lock to avoid cache stampede
 - All‑users report page
   - Policy/Gate: restrict delete to **own** favorites + negative tests
-- Larastan level 9 (keep CI green)
+- Larastan level 8+ (keep CI green)
 
 ---
 
