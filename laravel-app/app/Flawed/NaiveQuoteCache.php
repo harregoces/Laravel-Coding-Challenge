@@ -10,11 +10,15 @@ class NaiveQuoteCache
 {
     /**
      * Return true if a timestamp is within TTL seconds of now.
-     * BUG: compares TTL to now instead of (now - storedAt).
+     * FIXED: Now correctly compares the age of the stored item against the TTL.
+     * Diagnosis: The bug was comparing current timestamp (time()) directly with TTL seconds,
+     * which would always return true when TTL < current epoch time. The correct logic
+     * calculates the age of the cached item (time() - storedAtEpoch) and checks if
+     * that age is within the allowed TTL period.
      */
     public function isFresh(int $storedAtEpoch, int $ttlSeconds): bool
     {
-        // BUG: This is wrong on purpose.
-        return time() <= $ttlSeconds;
+        // Fixed: Calculate age and compare with TTL
+        return (time() - $storedAtEpoch) <= $ttlSeconds;
     }
 }
