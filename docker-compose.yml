@@ -1,0 +1,54 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: laravel-quotes-app
+    ports:
+      - "8083:80"
+    volumes:
+      - ./laravel-app:/var/www/html
+      - ./scripts:/opt/scripts
+      - ./starter-overlay:/opt/starter-overlay
+    environment:
+      - APP_ENV=${APP_ENV:-local}
+      - APP_DEBUG=${APP_DEBUG:-true}
+      - APP_KEY=${APP_KEY:-}
+      - DB_CONNECTION=sqlite
+      - DB_DATABASE=/var/www/html/database/database.sqlite
+      - CACHE_DRIVER=redis
+      - SESSION_DRIVER=database
+      - QUEUE_CONNECTION=sync
+      - QUOTES_CLIENT=${QUOTES_CLIENT:-real}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_CLIENT=phpredis
+    working_dir: /var/www/html
+    networks:
+      - laravel-network
+
+  # add redis service
+  redis:
+      image: redis:alpine
+      container_name: laravel-quotes-redis
+      ports:
+          - "6379:6379"
+      networks:
+          - laravel-network
+
+  # Add swagger-ui
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: laravel-quotes-swagger
+    ports:
+    - "8084:8080"
+    environment:
+      SWAGGER_JSON: /swagger/swagger.yaml
+    volumes:
+      - ./swagger:/swagger
+    networks:
+      - laravel-network
+
+networks:
+  laravel-network:
+    driver: bridge

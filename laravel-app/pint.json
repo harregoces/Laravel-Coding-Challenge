@@ -1,0 +1,110 @@
+{
+  "preset": "laravel",
+  "exclude": [
+    "database/migrations",
+    "node_modules",
+    "storage",
+    "vendor"
+  ],
+  "rules": {
+    "indentation_type": true,
+    "line_ending": true,
+    "no_trailing_whitespace": true,
+    "align_multiline_comment": true,
+    "array_indentation": true,
+    "array_syntax": {
+      "syntax": "short"
+    },
+    "binary_operator_spaces": {
+      "default": "align",
+      "operators": {
+        "=>": "align_single_space_minimal",
+        "=": "align_single_space_minimal"
+      }
+    },
+    "blank_line_after_namespace": true,
+    "blank_line_after_opening_tag": true,
+    "blank_line_before_statement": {
+      "statements": [
+        "break",
+        "case",
+        "continue",
+        "declare",
+        "default",
+        "do",
+        "exit",
+        "for",
+        "foreach",
+        "goto",
+        "if",
+        "include",
+        "include_once",
+        "phpdoc",
+        "require",
+        "require_once",
+        "return",
+        "switch",
+        "throw",
+        "try",
+        "while",
+        "yield",
+        "yield_from"
+      ]
+    },
+    "concat_space": {
+      "spacing": "none"
+    },
+    "class_attributes_separation": {
+      "elements": {
+        "const": "one",
+        "method": "one",
+        "property": "one",
+        "trait_import": "none",
+        "case": "none"
+      }
+    },
+    "no_spaces_inside_parenthesis": true,
+    "single_trait_insert_per_statement": true,
+    "no_multiple_statements_per_line": true,
+    "no_blank_lines_after_class_opening": true,
+    "declare_parentheses": true,
+    "new_with_parentheses": false,
+    "no_superfluous_phpdoc_tags": false,
+    "normalize_index_brace": true,
+    "not_operator_with_successor_space": false,
+    "simplified_null_return": true,
+    "unary_operator_spaces": false,
+    "function_declaration": {
+      "closure_fn_spacing": "none",
+      "closure_function_spacing": "none"
+    },
+    "ordered_imports": {
+      "sort_algorithm": "alpha"
+    },
+    "ordered_class_elements": {
+      "order": [
+        "use_trait",
+        "case",
+        "constant",
+        "constant_public",
+        "constant_protected",
+        "constant_private",
+        "property_public",
+        "property_protected",
+        "property_private",
+        "construct",
+        "destruct",
+        "magic",
+        "phpunit",
+        "method_abstract",
+        "method_public_static",
+        "method_public",
+        "method_protected_static",
+        "method_protected",
+        "method_private_static",
+        "method_private"
+      ],
+      "sort_algorithm": "none"
+    }
+  }
+}

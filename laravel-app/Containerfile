@@ -1,0 +1,28 @@
+# --- Builder stage ---
+FROM composer:2 AS vendor
+WORKDIR /app
+COPY . /app
+RUN test -f artisan || (echo "Laravel scaffold not found. Run ./scripts/bootstrap-laravel.sh before building." && exit 1)
+RUN composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
+
+# --- Runtime stage ---
+FROM php:8.3-apache-bookworm
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libsqlite3-0 libsqlite3-dev \
+ && docker-php-ext-install pdo_sqlite \
+ && a2enmod rewrite \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /var/www/html
+COPY --from=vendor /app /var/www/html
+
+# Set Laravel public as docroot; enable .htaccess override
+RUN sed -i 's#DocumentRoot /var/www/html#DocumentRoot /var/www/html/public#' /etc/apache2/sites-available/000-default.conf \
+ && sed -i 's#<Directory /var/www/>#<Directory /var/www/html/public/>#' /etc/apache2/apache2.conf \
+ && sed -i 's#AllowOverride None#AllowOverride All#' /etc/apache2/apache2.conf
+
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+EXPOSE 80
+CMD ["apache2-foreground"]

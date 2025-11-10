@@ -1,0 +1,184 @@
+{
+  "info": {
+    "name": "Quotes Challenge",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Today (QOD)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/today",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "today"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Quotes (API) \u2014 guest (5)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/quotes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "quotes"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Quotes (API) \u2014 authed (10)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/quotes?count=10",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "quotes"
+          ],
+          "query": [
+            {
+              "key": "count",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Quotes (API) \u2014 refresh",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/quotes?new=1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "quotes"
+          ],
+          "query": [
+            {
+              "key": "new",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Favorites (API) \u2014 list",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/favorites",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "favorites"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Favorites (API) \u2014 add",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"text\": \"Test quote\", \"author\": \"Tester\"}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/favorites",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "favorites"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Favorites (API) \u2014 delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"text\": \"Test quote\", \"author\": \"Tester\"}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/favorites",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "favorites"
+          ]
+        }
+      }
+    }
+  ]
+}

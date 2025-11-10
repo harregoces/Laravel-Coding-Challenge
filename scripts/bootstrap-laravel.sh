@@ -1,5 +1,7 @@
-#!/usr/bin/env bash
 set -euo pipefail
+
+# Change working directory to /var/www/html
+cd /var/www/html
 
 # Fail early if composer isn't available
 if ! command -v composer >/dev/null 2>&1; then
@@ -41,17 +43,13 @@ mkdir -p database
 # Overlay our starter files on top of the skeleton
 # (exclude vendor/node_modules from overlay)
 if [ -d "starter-overlay" ]; then
-  rsync -a --exclude 'vendor' --exclude 'node_modules' starter-overlay/ ./ 2>/dev/null || $CP starter-overlay/. ./
+  rsync -a --exclude 'vendor' --exclude 'node_modules' /opt/starter-overlay/ ./ 2>/dev/null || $CP /opt/starter-overlay/. ./
 fi
 
 # Create cache table for database cache driver (ok if already exists)
 php artisan cache:table || true
 
-# Static analysis (Larastan) — enforced at level 7 in phpstan.neon.dist
-# Detect Laravel major version; pick Larastan accordingly
-LARAVEL_MAJ=$(php -r "echo preg_replace('/[^0-9].*$/','', json_decode(file_get_contents('composer.json'), true)['require']['laravel/framework'] ?? '12');")
-if [ "${LARAVEL_MAJ:-12}" -ge 12 ]; then
-  composer require --dev larastan/larastan:^3 --no-interaction
-else
-  composer require --dev nunomaduro/larastan:^2.11 --no-interaction
-fi
+# Static analysis (Larastan) — enforced at level 6 in phpstan.neon.dist
+# use larastan as this is the default for laravel 12
+composer require --dev larastan/larastan:^3 --no-interaction
+
