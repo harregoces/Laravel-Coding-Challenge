@@ -30,7 +30,7 @@ class QuotesApiController extends Controller
             'meta' => [
                 'count' => $count,
                 'client' => config('quotes.client', 'real'),
-                'source' => 'zenquotes',
+                'source' => 'api-ninjas',
             ],
         ]);
     }

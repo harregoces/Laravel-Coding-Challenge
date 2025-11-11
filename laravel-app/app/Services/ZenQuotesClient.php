@@ -8,6 +8,16 @@ use App\Contracts\QuoteApiClient;
 use App\DTOs\QuoteDTO;
 
 /**
+ * NOTE: This client is not currently used in the application.
+ * The project uses NinjaQuotesClient (app/Services/NinjaQuotesClient.php) instead.
+ *
+ * This file remains as a reference implementation for the original ZenQuotes
+ * integration specified in the challenge requirements.
+ *
+ * To implement: See ADR 0003 for retry logic and error handling patterns.
+ */
+
+/**
  * ZenQuotesClient (TEMPLATE)
  *
  * Implement the "real" client for the ZenQuotes **free** API.
